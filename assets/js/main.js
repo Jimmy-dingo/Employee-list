@@ -78,32 +78,31 @@ function addEmployee(event) {
   // get age from input
   // get salary from input
   // create employee object
-  var $inpName = document.querySelector('input[name="name"]');
-  var $inpAge = document.querySelector('input[name="age"]');
-  var $inpSalary = document.querySelector('input[name="salary"]');
+  var $impName = document.querySelector('input[name="name"]');
+  var $impAge = document.querySelector('input[name="age"]');
+  var $impSalary = document.querySelector('input[name="salary"]');
+
   var employee = {
-    name: $inpName.value,
-    age: $inpAge.value,
-    salary: $inpSalary.value,
+    name: $impName.value,
+    age: $impAge.value,
+    salary: $impSalary.value,
   };
-  // employee.name = $inpName.value;
-  // employee.age = $inpAge.value;
-  // employee.salary = $inpSalary.value;
+
   console.log(employee.name);
   console.log(employee.age);
   console.log(employee.salary);
+  // list in the DOM
   var employeeElement = createEmployeeElement(employee);
   var agendaElement = document.querySelector('.agenda');
   agendaElement.appendChild(employeeElement);
 
   // POST employeesAPI employee
-  fetch(  employeesAPI, {  
+  fetch(employeesAPI, {  
     method: 'POST',  
-    body: JSON.stringify({    
-      name: $inpName.value,    
-      age: $inpAge.value,    
-      salary: $inpSalary.value,    
-    }) 
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(employee)
     })
     .then(function (response) {
       return response.json();
@@ -111,7 +110,10 @@ function addEmployee(event) {
     .then(function (jsonResp) {
       console.log(jsonResp);
     })
+    
+
 }
+
 
 function removeEmployee(event) {
   // take event.target // remove button
