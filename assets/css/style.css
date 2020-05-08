@@ -1,0 +1,91 @@
+:root {
+  font-size: 10px;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: lightgrey;
+}
+
+h1 {
+  font-size: 3rem;
+  color: #464646;
+}
+
+.container {
+  background: white;
+  width: 900px;
+  margin: 100px auto;
+  border-radius: 10px;
+  border: 1px solid grey;
+  padding: 10px;
+}
+
+.agenda {
+  list-style: none;
+  margin: 10px;
+}
+
+.agenda .employee {
+  background-color: lightblue;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  position: relative;
+}
+
+.employee .name {
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.employee .remove {
+  background: none;
+  border: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: red;
+}
+
+.remove:hover {
+  cursor: pointer;
+}
+
+/* Input stylyng*/
+
+form {
+  margin: 120px 10px 30px 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+}
+form div{
+  display: flex;
+  flex-direction: column;
+  height: 70px;
+}
+form div span{
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333333;
+}
+form div input{
+  width: 220px;
+  height: 20px;
+  padding: 5px;
+  border: 1px solid rgb(133, 133, 133);
+  border-radius: 5px;
+}
+[type="submit"]{
+  color: white;
+  font-size: 2.3rem;
+  background-color: #fd7d82;
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  border: none;
+}
