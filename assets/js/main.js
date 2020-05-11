@@ -23,7 +23,7 @@ function createEmployeeElement(employee) {
 
   var employeeElement = document.createElement('li');
   employeeElement.classList.add('employee');
-
+  
   var employeeNameElement = document.createElement('div');
   employeeNameElement.classList.add('name');
   employeeNameElement.innerText = employee.name;
@@ -47,6 +47,8 @@ function createEmployeeElement(employee) {
   var removeElement = document.createElement('button');
   removeElement.classList.add('remove');
   removeElement.innerText = 'X';
+  // event listener on remove button
+  removeElement.addEventListener('click', removeEmployee);
 
   employeeElement.appendChild(employeeNameElement);
   employeeElement.appendChild(pElement);
@@ -66,7 +68,7 @@ function listEmployees(employees) {
 
 function getEmployees() {
   // We GET employees from API
-  fetch(employeesAPI + '?_limit=5')  // Limit the display to only 5 records.
+  fetch(employeesAPI + '?_start=15')  // Limit the display to only 5 records.
     .then(deserializeResponse)
     .then(listEmployees);
 }
@@ -110,25 +112,50 @@ function addEmployee(event) {
     .then(function (jsonResp) {
       console.log(jsonResp);
     })
-    
+  }
 
-}
-
+/*** Remove button ***/
 
 function removeEmployee(event) {
+  console.log('button is clicked');
   // take event.target // remove button
+
+  var removeElement = document.querySelector('.remove');
+  console.log(removeElement);
+  
   // get remove button parent .parent()
+
+  var employeeElement = event.target.parentElement
+  console.log(employeeElement);
+
   // var id = dataset.id from parent https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
+
+  var id = employeeElement.dataset.id
+  console.log(id);
+
   // remove parent .remove()
+
+  employeeElement.remove();
+
   // DELETE `employeeAPI/${id}`
+
+  // fetch( `employeeAPI/${id}`, {  
+  //   method: 'DELETE' 
+  // })
+  // .then(function(response){ 
+  //   return response.json(); 
+  // })
+  // .then(function(jsonResp){    
+  //   console.log(jsonResp); 
+  // });
 }
 
 // When the page is finished loading this function is called
-function   onDOMLoad() {
+function onDOMLoad() {
   // we call getEmployees function
   // to easely get to the function hold ctrl and click on the function name
   getEmployees();
-
+  
   var addEmployeeElement = document.querySelector('.add-employee');
   addEmployeeElement.addEventListener('click', addEmployee);
 }
