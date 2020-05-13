@@ -22,6 +22,7 @@ function createEmployeeElement(employee) {
   // `
 
   var employeeElement = document.createElement('li');
+  employeeElement.dataset.id = employee.id;
   employeeElement.classList.add('employee');
   
   var employeeNameElement = document.createElement('div');
@@ -68,14 +69,16 @@ function listEmployees(employees) {
 
 function getEmployees() {
   // We GET employees from API
-  fetch(employeesAPI + '?_start=15')  // Limit the display to only 5 records.
+  fetch(employeesAPI + '?_start=15&_limit=10')  // Limit the display to only 10 records, starting from the 15th.
     .then(deserializeResponse)
     .then(listEmployees);
 }
 
 function addEmployee(event) {
   event.preventDefault();
-  console.log('add employee');
+  var loadingScreen = document.querySelector('.loading-screen');
+  loadingScreen.style.display = 'block';
+  console.log('adding employee');
   // get name from input
   // get age from input
   // get salary from input
@@ -83,21 +86,13 @@ function addEmployee(event) {
   var $impName = document.querySelector('input[name="name"]');
   var $impAge = document.querySelector('input[name="age"]');
   var $impSalary = document.querySelector('input[name="salary"]');
-
   var employee = {
     name: $impName.value,
     age: $impAge.value,
     salary: $impSalary.value,
   };
-
-  console.log(employee.name);
-  console.log(employee.age);
-  console.log(employee.salary);
-  // list in the DOM
-  var employeeElement = createEmployeeElement(employee);
-  var agendaElement = document.querySelector('.agenda');
-  agendaElement.appendChild(employeeElement);
-
+  
+  
   // POST employeesAPI employee
   fetch(employeesAPI, {  
     method: 'POST',  
@@ -105,32 +100,39 @@ function addEmployee(event) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(employee)
-    })
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (jsonResp) {
-      console.log(jsonResp);
-    })
+  })
+  .then(function (response) {
+    return response.json();
+  })
+  .then(function (jsonResp) {
+    console.log(jsonResp);
+    
+    // list in the DOM
+    var employeeElement = createEmployeeElement(employee);
+    var agendaElement = document.querySelector('.agenda');
+    agendaElement.appendChild(employeeElement);
+    
+    //it adds the id got from the API to the li element
+    employeeElement.dataset.id = jsonResp.id;
+    console.log(employeeElement);
+    
+    //removes the animation after adding the new employee
+    loadingScreen.style.display = 'none';
+  })
   }
 
 /*** Remove button ***/
 
 function removeEmployee(event) {
-  console.log('button is clicked');
-  // take event.target // remove button
-
-  var removeElement = document.querySelector('.remove');
-  console.log(removeElement);
-  
+  console.log('Remove button is clicked');
   // get remove button parent .parent()
 
-  var employeeElement = event.target.parentElement
+  var employeeElement = event.target.parentElement // it is referring to the button I clicked (parent so li)
   console.log(employeeElement);
 
   // var id = dataset.id from parent https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
 
-  var id = employeeElement.dataset.id
+  var id = employeeElement.dataset.id;
   console.log(id);
 
   // remove parent .remove()
@@ -139,15 +141,15 @@ function removeEmployee(event) {
 
   // DELETE `employeeAPI/${id}`
 
-  // fetch( `employeeAPI/${id}`, {  
-  //   method: 'DELETE' 
-  // })
-  // .then(function(response){ 
-  //   return response.json(); 
-  // })
-  // .then(function(jsonResp){    
-  //   console.log(jsonResp); 
-  // });
+  fetch(employeesAPI + `/${id}`, {  
+    method: 'DELETE'
+  })
+  .then(function(response){ 
+    return response.json(); 
+  })
+  .then(function(jsonResp){    
+    console.log(jsonResp); 
+  });
 }
 
 // When the page is finished loading this function is called
